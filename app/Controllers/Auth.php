@@ -38,10 +38,9 @@ class Auth extends BaseController
             return $this->registrasiPage();
         }
         $data = [
-            'nama' => $this->request->getPost('nama'),
-            'password' => $this->request->getPost('password')
+            'nama' => $this->request->getVar('nama'),
+            'password' => password_hash($this->request->getVar('password'), PASSWORD_DEFAULT)
         ];
-
         $this->model->registrasi($data);
         return redirect()->to(base_url());
     }
