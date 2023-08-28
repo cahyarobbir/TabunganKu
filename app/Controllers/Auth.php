@@ -3,9 +3,16 @@
 namespace app\Controllers;
 
 use App\Controllers\BaseController;
+use App\Models\UserModel;
 
 class Auth extends BaseController
 {
+    protected $model;
+
+    public function __construct()
+    {
+        $this->model = model(UserModel::class);
+    }
 
     function loginPage()
     {
@@ -22,6 +29,20 @@ class Auth extends BaseController
 
     function registrasi()
     {
+        $rules = [
+            'nama' => 'required',
+            'password' => 'required'
+        ];
+
+        if (!$this->validate($rules)) {
+            return $this->registrasiPage();
+        }
+        $data = [
+            'nama' => $this->request->getPost('nama'),
+            'password' => $this->request->getPost('password')
+        ];
+
+        $this->model->registrasi($data);
         return redirect()->to(base_url());
     }
 
