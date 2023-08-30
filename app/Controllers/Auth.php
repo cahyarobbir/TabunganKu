@@ -24,7 +24,38 @@ class Auth extends BaseController
 
     function login()
     {
-        return redirect()->to(base_url());
+        $rules = [
+            'nama' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Nama harus di isi'
+                ]
+            ],
+            'password' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Password harus di isi'
+                ]
+            ]
+        ];
+
+
+
+        if (!$this->validate($rules)) {
+            echo "Debugging: This message should appear.";
+            return redirect()->to('login')->withInput()->with('validation', $this->validator);
+        }
+
+        $nama = $this->request->getVar('nama');
+        $password = $this->request->getVar('password');
+
+        $data = $this->model->login($nama);
+
+        if ($data && password_verify($password, $data['password'])) {
+            return redirect()->to(base_url());
+        } else {
+            return redirect()->to('login')->withInput()->with('error', 'Nama atau Password salah');
+        }
     }
 
     function registrasi()

@@ -29,4 +29,9 @@ class UserModel extends Model
     {
         $this->save($data);
     }
+
+    function login($nama)
+    {
+        return $this->where('nama', $nama)->first();
+    }
 }
