@@ -32,6 +32,8 @@ class UserModel extends Model
 
     function login($nama)
     {
-        return $this->where('nama', $nama)->first();
+        $builder = $this->select('nama,password,saldo,id_tabungan')->join('tabungan', 'user.id_tabungan = tabungan.id')->where('nama', $nama);
+        $result = $builder->first();
+        return $result;
     }
 }
