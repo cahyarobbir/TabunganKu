@@ -52,6 +52,7 @@ class Auth extends BaseController
         $data = $this->model->login($nama);
 
         if ($data && password_verify($password, $data['password'])) {
+            session()->set('user', $data);
             return redirect()->to(base_url());
         } else {
             return redirect()->to('login')->withInput()->with('error', 'Nama atau Password salah');
